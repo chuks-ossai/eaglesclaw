@@ -38,16 +38,16 @@ db.Sequelize = Sequelize;
 
 // Associations
 
-// Permissions
-db.Permission.hasMany(db.User);
+// Role to Users
+db.Role.hasMany(db.User);
 
-// Users
-db.User.belongsTo(db.Permission);
+// Users to Role
+db.User.belongsTo(db.Role);
 
 sequelize.authenticate().then(() => {
-  console.log('Connection authenticated successfully')
+  console.log('Database authenticated successfully')
 }).catch(err => {
-  console.error('Unable to authenticate connection', err);
+  console.error('Unable to authenticate database', err);
 })
 
 module.exports = db;

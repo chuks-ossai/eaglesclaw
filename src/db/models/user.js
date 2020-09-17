@@ -2,6 +2,8 @@
 const {
   Model
 } = require('sequelize');
+const db = require('./index');
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -16,41 +18,55 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     id: {
       type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
     first_name: {
       type: DataTypes.STRING,
       isAlphanumeric: true,
       required: true,
-      allowNull: true
+      allowNull: true,
+      notEmpty: {
+        msg: 'first_name field cannot be empty'
+      }
+     
     },
     last_name: {
       type: DataTypes.STRING,
       required: true,
-      allowNull: true
+      allowNull: true,
+      notEmpty: true,
     },
     username: {
       type: DataTypes.STRING,
       required: true,
       len: [8, 20],
-      allowNull: true
+      allowNull: true,
+      unique: true,
+      notEmpty: true,
     },
     email: {
       type: DataTypes.STRING,
       isEmail: true,
       len:[7, 50],
       required: true,
-      allowNull: true
+      allowNull: true,
+      unique: true,
+      notEmpty: true,
     },
     midname: {
       type: DataTypes.STRING,
       required: true,
       allowNull: true
     },
-    permission_id: {
+    role_id: {
       type: DataTypes.INTEGER,
       required: true,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: db.Role,
+        key: 'id',
+      }
     },
     about: {
       type: DataTypes.TEXT,
